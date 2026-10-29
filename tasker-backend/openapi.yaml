@@ -1,0 +1,2910 @@
+openapi: 3.0.3
+info:
+  title: Tasker API
+  version: 1.1.0
+paths:
+  /api/anuncios/:
+    get:
+      operationId: anuncios_list
+      parameters:
+      - in: query
+        name: fk_id_categoria
+        schema:
+          type: integer
+      - in: query
+        name: fk_id_usuario
+        schema:
+          type: integer
+      - in: query
+        name: latitude
+        schema:
+          type: number
+      - in: query
+        name: longitude
+        schema:
+          type: number
+      - name: ordering
+        required: false
+        in: query
+        description: Qual campo usar ao ordenar os resultados.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: Um número de página dentro do conjunto de resultados paginado.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Número de resultados a serem retornados por página.
+        schema:
+          type: integer
+      - in: query
+        name: preco_max
+        schema:
+          type: number
+      - in: query
+        name: preco_min
+        schema:
+          type: number
+      - in: query
+        name: raio_km
+        schema:
+          type: number
+      - name: search
+        required: false
+        in: query
+        description: Um termo de busca.
+        schema:
+          type: string
+      - in: query
+        name: st_anuncio
+        schema:
+          type: boolean
+      tags:
+      - anuncios
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAnuncioList'
+          description: ''
+    post:
+      operationId: anuncios_create
+      tags:
+      - anuncios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Anuncio'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Anuncio'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Anuncio'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anuncio'
+          description: ''
+  /api/anuncios/{id}/:
+    get:
+      operationId: anuncios_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este anuncio.
+        required: true
+      tags:
+      - anuncios
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anuncio'
+          description: ''
+    put:
+      operationId: anuncios_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este anuncio.
+        required: true
+      tags:
+      - anuncios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Anuncio'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Anuncio'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Anuncio'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anuncio'
+          description: ''
+    patch:
+      operationId: anuncios_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este anuncio.
+        required: true
+      tags:
+      - anuncios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAnuncio'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAnuncio'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAnuncio'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anuncio'
+          description: ''
+    delete:
+      operationId: anuncios_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este anuncio.
+        required: true
+      tags:
+      - anuncios
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/avaliacao/:
+    get:
+      operationId: avaliacao_list
+      tags:
+      - avaliacao
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Avaliacao'
+          description: ''
+    post:
+      operationId: avaliacao_create
+      tags:
+      - avaliacao
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Avaliacao'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Avaliacao'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Avaliacao'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Avaliacao'
+          description: ''
+  /api/avaliacao/{id}/:
+    get:
+      operationId: avaliacao_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este Avaliação.
+        required: true
+      tags:
+      - avaliacao
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Avaliacao'
+          description: ''
+    put:
+      operationId: avaliacao_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este Avaliação.
+        required: true
+      tags:
+      - avaliacao
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Avaliacao'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Avaliacao'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Avaliacao'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Avaliacao'
+          description: ''
+    patch:
+      operationId: avaliacao_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este Avaliação.
+        required: true
+      tags:
+      - avaliacao
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAvaliacao'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAvaliacao'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAvaliacao'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Avaliacao'
+          description: ''
+    delete:
+      operationId: avaliacao_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este Avaliação.
+        required: true
+      tags:
+      - avaliacao
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/bloqueios/:
+    get:
+      operationId: bloqueios_list
+      tags:
+      - bloqueios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bloqueio'
+          description: ''
+    post:
+      operationId: bloqueios_create
+      tags:
+      - bloqueios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Bloqueio'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Bloqueio'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Bloqueio'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bloqueio'
+          description: ''
+  /api/bloqueios/{id}/:
+    delete:
+      operationId: bloqueios_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este bloqueio.
+        required: true
+      tags:
+      - bloqueios
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/calendarios/:
+    get:
+      operationId: calendarios_list
+      tags:
+      - calendarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Calendario'
+          description: ''
+  /api/calendarios/{id}/:
+    get:
+      operationId: calendarios_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este calendario.
+        required: true
+      tags:
+      - calendarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Calendario'
+          description: ''
+  /api/categorias/:
+    get:
+      operationId: categorias_list
+      tags:
+      - categorias
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Categoria'
+          description: ''
+    post:
+      operationId: categorias_create
+      tags:
+      - categorias
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Categoria'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Categoria'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Categoria'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+          description: ''
+  /api/categorias/{id}/:
+    get:
+      operationId: categorias_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este categoria.
+        required: true
+      tags:
+      - categorias
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+          description: ''
+    put:
+      operationId: categorias_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este categoria.
+        required: true
+      tags:
+      - categorias
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Categoria'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Categoria'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Categoria'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+          description: ''
+    patch:
+      operationId: categorias_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este categoria.
+        required: true
+      tags:
+      - categorias
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCategoria'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCategoria'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCategoria'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+          description: ''
+    delete:
+      operationId: categorias_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este categoria.
+        required: true
+      tags:
+      - categorias
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/compromissos/:
+    get:
+      operationId: compromissos_list
+      tags:
+      - compromissos
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Compromisso'
+          description: ''
+    post:
+      operationId: compromissos_create
+      tags:
+      - compromissos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Compromisso'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Compromisso'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Compromisso'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Compromisso'
+          description: ''
+  /api/compromissos/{id}/:
+    get:
+      operationId: compromissos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este compromisso pessoal.
+        required: true
+      tags:
+      - compromissos
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Compromisso'
+          description: ''
+    put:
+      operationId: compromissos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este compromisso pessoal.
+        required: true
+      tags:
+      - compromissos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Compromisso'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Compromisso'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Compromisso'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Compromisso'
+          description: ''
+    patch:
+      operationId: compromissos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este compromisso pessoal.
+        required: true
+      tags:
+      - compromissos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCompromisso'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCompromisso'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCompromisso'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Compromisso'
+          description: ''
+    delete:
+      operationId: compromissos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este compromisso pessoal.
+        required: true
+      tags:
+      - compromissos
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/config/:
+    get:
+      operationId: config_list
+      tags:
+      - config
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Config'
+          description: ''
+  /api/contratacoes/:
+    get:
+      operationId: contratacoes_list
+      tags:
+      - contratacoes
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contratacao'
+          description: ''
+    post:
+      operationId: contratacoes_create
+      tags:
+      - contratacoes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contratacao'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Contratacao'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Contratacao'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contratacao'
+          description: ''
+  /api/contratacoes/{id}/:
+    get:
+      operationId: contratacoes_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este contratacao.
+        required: true
+      tags:
+      - contratacoes
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contratacao'
+          description: ''
+  /api/contratacoes/{id}/aceitar/:
+    patch:
+      operationId: contratacoes_aceitar_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este contratacao.
+        required: true
+      tags:
+      - contratacoes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contratacao'
+          description: ''
+  /api/contratacoes/{id}/cancelar/:
+    patch:
+      operationId: contratacoes_cancelar_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este contratacao.
+        required: true
+      tags:
+      - contratacoes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contratacao'
+          description: ''
+  /api/contratacoes/{id}/concluir/:
+    patch:
+      operationId: contratacoes_concluir_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este contratacao.
+        required: true
+      tags:
+      - contratacoes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contratacao'
+          description: ''
+  /api/contratacoes/{id}/contestar/:
+    patch:
+      operationId: contratacoes_contestar_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este contratacao.
+        required: true
+      tags:
+      - contratacoes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contratacao'
+          description: ''
+  /api/contratacoes/{id}/reagendar/:
+    patch:
+      operationId: contratacoes_reagendar_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este contratacao.
+        required: true
+      tags:
+      - contratacoes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contratacao'
+          description: ''
+  /api/contratacoes/{id}/recusar/:
+    patch:
+      operationId: contratacoes_recusar_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este contratacao.
+        required: true
+      tags:
+      - contratacoes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contratacao'
+          description: ''
+  /api/contratacoes/{id}/responder-reagendamento/:
+    patch:
+      operationId: contratacoes_responder_reagendamento_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este contratacao.
+        required: true
+      tags:
+      - contratacoes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedContratacao'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contratacao'
+          description: ''
+  /api/favoritos/:
+    get:
+      operationId: favoritos_list
+      tags:
+      - favoritos
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Favorito'
+          description: ''
+    post:
+      operationId: favoritos_create
+      tags:
+      - favoritos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Favorito'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Favorito'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Favorito'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Favorito'
+          description: ''
+  /api/favoritos/{id}/:
+    delete:
+      operationId: favoritos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este favorito.
+        required: true
+      tags:
+      - favoritos
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/mensagens/:
+    get:
+      operationId: mensagens_list
+      tags:
+      - mensagens
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mensagem'
+          description: ''
+    post:
+      operationId: mensagens_create
+      tags:
+      - mensagens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mensagem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Mensagem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Mensagem'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
+          description: ''
+  /api/mensagens/{id}/:
+    get:
+      operationId: mensagens_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este mensagem.
+        required: true
+      tags:
+      - mensagens
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
+          description: ''
+    delete:
+      operationId: mensagens_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este mensagem.
+        required: true
+      tags:
+      - mensagens
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/mensagens/ler/:
+    post:
+      operationId: mensagens_ler_create
+      tags:
+      - mensagens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mensagem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Mensagem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Mensagem'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
+          description: ''
+  /api/notificacoes/:
+    get:
+      operationId: notificacoes_list
+      tags:
+      - notificacoes
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notificacao'
+          description: ''
+  /api/notificacoes/{id}/:
+    get:
+      operationId: notificacoes_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este notificacao.
+        required: true
+      tags:
+      - notificacoes
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notificacao'
+          description: ''
+  /api/notificacoes/ler/:
+    post:
+      operationId: notificacoes_ler_create
+      tags:
+      - notificacoes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notificacao'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notificacao'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notificacao'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notificacao'
+          description: ''
+  /api/pagamentos/:
+    get:
+      operationId: pagamentos_list
+      tags:
+      - pagamentos
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pagamento'
+          description: ''
+  /api/pagamentos/{id}/:
+    get:
+      operationId: pagamentos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este pagamento.
+        required: true
+      tags:
+      - pagamentos
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pagamento'
+          description: ''
+  /api/pagamentos/{id}/estornar/:
+    post:
+      operationId: pagamentos_estornar_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este pagamento.
+        required: true
+      tags:
+      - pagamentos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pagamento'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Pagamento'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Pagamento'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pagamento'
+          description: ''
+  /api/pagamentos/{id}/liberar/:
+    post:
+      operationId: pagamentos_liberar_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este pagamento.
+        required: true
+      tags:
+      - pagamentos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pagamento'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Pagamento'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Pagamento'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pagamento'
+          description: ''
+  /api/perfis/:
+    get:
+      operationId: perfis_list
+      tags:
+      - perfis
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PerfilPublico'
+          description: ''
+  /api/perfis/{id}/:
+    get:
+      operationId: perfis_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este usuário.
+        required: true
+      tags:
+      - perfis
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfilPublico'
+          description: ''
+  /api/servicos/:
+    get:
+      operationId: servicos_list
+      tags:
+      - servicos
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Servico'
+          description: ''
+    post:
+      operationId: servicos_create
+      tags:
+      - servicos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Servico'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Servico'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Servico'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servico'
+          description: ''
+  /api/servicos/{id}/:
+    get:
+      operationId: servicos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este servico.
+        required: true
+      tags:
+      - servicos
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servico'
+          description: ''
+    put:
+      operationId: servicos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este servico.
+        required: true
+      tags:
+      - servicos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Servico'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Servico'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Servico'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servico'
+          description: ''
+    patch:
+      operationId: servicos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este servico.
+        required: true
+      tags:
+      - servicos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedServico'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedServico'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedServico'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servico'
+          description: ''
+    delete:
+      operationId: servicos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este servico.
+        required: true
+      tags:
+      - servicos
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/suporte/:
+    get:
+      operationId: suporte_list
+      tags:
+      - suporte
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Protocolo'
+          description: ''
+    post:
+      operationId: suporte_create
+      tags:
+      - suporte
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Protocolo'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Protocolo'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Protocolo'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Protocolo'
+          description: ''
+  /api/suporte/{id}/:
+    get:
+      operationId: suporte_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este protocolo.
+        required: true
+      tags:
+      - suporte
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Protocolo'
+          description: ''
+  /api/token/:
+    post:
+      operationId: token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomTokenObtainPair'
+          description: ''
+  /api/token/refresh/:
+    post:
+      operationId: token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/usuarios/:
+    get:
+      operationId: usuarios_list
+      tags:
+      - usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+          description: ''
+    post:
+      operationId: usuarios_create
+      tags:
+      - usuarios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/usuarios/{id}/:
+    get:
+      operationId: usuarios_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Um valor inteiro único que identifica este usuário.
+        required: true
+      tags:
+      - usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/usuarios/alterar-senha/:
+    post:
+      operationId: usuarios_alterar_senha_create
+      tags:
+      - usuarios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/usuarios/excluir-conta/:
+    delete:
+      operationId: usuarios_excluir_conta_destroy
+      tags:
+      - usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/usuarios/me/:
+    get:
+      operationId: usuarios_me_retrieve
+      tags:
+      - usuarios
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+    put:
+      operationId: usuarios_me_update
+      tags:
+      - usuarios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+    patch:
+      operationId: usuarios_me_partial_update
+      tags:
+      - usuarios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuario'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/usuarios/recuperar-senha/:
+    post:
+      operationId: usuarios_recuperar_senha_create
+      tags:
+      - usuarios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/usuarios/redefinir-senha/:
+    post:
+      operationId: usuarios_redefinir_senha_create
+      tags:
+      - usuarios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/webhooks/asaas/:
+    post:
+      operationId: webhooks_asaas_create
+      tags:
+      - webhooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Webhook'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Webhook'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Webhook'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '503':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+components:
+  schemas:
+    Anuncio:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        distancia_km:
+          type: number
+          format: double
+          readOnly: true
+        nm_titulo:
+          type: string
+          maxLength: 100
+        nm_descricao:
+          type: string
+          maxLength: 2000
+        imagens: {}
+        dias_atendimento: {}
+        vl_preco:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        nr_latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,7})?$
+          nullable: true
+        nr_longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,7})?$
+          nullable: true
+        nm_area_atendimento:
+          type: string
+          maxLength: 100
+        nm_disponibilidade:
+          type: string
+          maxLength: 45
+        st_anuncio:
+          type: boolean
+        dt_criacao_anuncio:
+          type: string
+          format: date-time
+          readOnly: true
+        fk_id_usuario:
+          type: integer
+          readOnly: true
+        fk_id_categoria:
+          type: integer
+      required:
+      - distancia_km
+      - dt_criacao_anuncio
+      - fk_id_categoria
+      - fk_id_usuario
+      - id
+      - nm_area_atendimento
+      - nm_descricao
+      - nm_disponibilidade
+      - nm_titulo
+      - vl_preco
+    Avaliacao:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        fk_id_contratacao:
+          type: integer
+        avaliador_nome:
+          type: string
+          readOnly: true
+        avaliado_nome:
+          type: string
+          readOnly: true
+        nr_nota:
+          type: integer
+          maximum: 5
+          minimum: 1
+          description: Nota de 1 a 5 estrelas
+        ds_comentario:
+          type: string
+          nullable: true
+        dt_criacao:
+          type: string
+          format: date-time
+          readOnly: true
+        avaliador:
+          type: integer
+          readOnly: true
+        avaliado:
+          type: integer
+          readOnly: true
+      required:
+      - avaliado
+      - avaliado_nome
+      - avaliador
+      - avaliador_nome
+      - dt_criacao
+      - fk_id_contratacao
+      - id
+      - nr_nota
+    Bloqueio:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        bloqueado:
+          type: integer
+      required:
+      - bloqueado
+      - id
+    Calendario:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        dt_agendamento:
+          type: string
+          format: date
+        hr_inicio:
+          type: string
+          format: time
+        hr_final:
+          type: string
+          format: time
+        st_agendamento:
+          type: string
+          nullable: true
+          maxLength: 45
+        fk_id_usuario:
+          type: integer
+        fk_id_contratacao:
+          type: integer
+      required:
+      - dt_agendamento
+      - fk_id_contratacao
+      - fk_id_usuario
+      - hr_final
+      - hr_inicio
+      - id
+    Categoria:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nm_categoria:
+          type: string
+          maxLength: 45
+      required:
+      - id
+      - nm_categoria
+    Compromisso:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        titulo:
+          type: string
+          maxLength: 100
+        data:
+          type: string
+          format: date
+        hora:
+          type: string
+          format: time
+        duracao:
+          type: integer
+          maximum: 480
+          minimum: 30
+        observacoes:
+          type: string
+      required:
+      - data
+      - hora
+      - id
+      - titulo
+    Config:
+      type: object
+      properties:
+        payments_mode:
+          $ref: '#/components/schemas/PaymentsModeEnum'
+      required:
+      - payments_mode
+    Contratacao:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        cliente_nome:
+          type: string
+          readOnly: true
+        anuncio_titulo:
+          type: string
+          readOnly: true
+        prestador_id:
+          type: integer
+          readOnly: true
+        chave_solicitacao:
+          type: string
+          nullable: true
+          maxLength: 64
+        contestado:
+          type: boolean
+          readOnly: true
+        motivo_contestacao:
+          type: string
+          readOnly: true
+        ds_solicitacao:
+          type: string
+        nm_endereco:
+          type: string
+          maxLength: 300
+        proposta_reagendamento:
+          readOnly: true
+          nullable: true
+        st_status:
+          allOf:
+          - $ref: '#/components/schemas/StStatusEnum'
+          readOnly: true
+        concluido_cliente:
+          type: boolean
+          readOnly: true
+        concluido_prestador:
+          type: boolean
+          readOnly: true
+        dt_criacao:
+          type: string
+          format: date-time
+          readOnly: true
+        dt_atualizacao:
+          type: string
+          format: date-time
+          readOnly: true
+        dt_agendamento:
+          type: string
+          format: date
+        hr_inicio:
+          type: string
+          format: time
+        hr_final:
+          type: string
+          format: time
+        nr_latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,7})?$
+          nullable: true
+        nr_longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,7})?$
+          nullable: true
+        fk_id_cliente:
+          type: integer
+          readOnly: true
+        fk_id_anuncio:
+          type: integer
+      required:
+      - anuncio_titulo
+      - cliente_nome
+      - concluido_cliente
+      - concluido_prestador
+      - contestado
+      - dt_agendamento
+      - dt_atualizacao
+      - dt_criacao
+      - fk_id_anuncio
+      - fk_id_cliente
+      - hr_final
+      - hr_inicio
+      - id
+      - motivo_contestacao
+      - prestador_id
+      - proposta_reagendamento
+      - st_status
+    CustomTokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
+    EstadoEnum:
+      enum:
+      - aberto
+      - respondido
+      - encerrado
+      type: string
+      description: |-
+        * `aberto` - Aberto
+        * `respondido` - Respondido
+        * `encerrado` - Encerrado
+    Favorito:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        anuncio:
+          type: integer
+      required:
+      - anuncio
+      - id
+    IdTpPerfilEnum:
+      enum:
+      - autonomo
+      - contratante
+      type: string
+      description: |-
+        * `autonomo` - Autônomo
+        * `contratante` - Contratante
+    Mensagem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        fk_id_contratacao:
+          type: integer
+          nullable: true
+        destinatario:
+          type: integer
+          nullable: true
+        remetente:
+          type: integer
+          readOnly: true
+        remetente_username:
+          type: string
+          readOnly: true
+        ds_mensagem:
+          type: string
+        dt_envio:
+          type: string
+          format: date-time
+          readOnly: true
+        lida:
+          type: boolean
+          readOnly: true
+      required:
+      - ds_mensagem
+      - dt_envio
+      - id
+      - lida
+      - remetente
+      - remetente_username
+    Notificacao:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        texto:
+          type: string
+          maxLength: 300
+        rota:
+          type: string
+          maxLength: 60
+        alvo:
+          type: string
+          maxLength: 30
+        lida:
+          type: boolean
+        criado:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - criado
+      - id
+      - texto
+    Pagamento:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        fk_id_contratacao:
+          type: integer
+          readOnly: true
+        vl_servico:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+        st_pagamento:
+          allOf:
+          - $ref: '#/components/schemas/StPagamentoEnum'
+          readOnly: true
+        dt_declaracao_pagamento:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        asaas_payment_id:
+          type: string
+          readOnly: true
+          nullable: true
+        asaas_transfer_id:
+          type: string
+          readOnly: true
+          nullable: true
+        pix_qr_code:
+          type: string
+          readOnly: true
+          nullable: true
+        pix_copia_cola:
+          type: string
+          readOnly: true
+          nullable: true
+        status_contratacao:
+          type: string
+          readOnly: true
+        dt_estorno:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - asaas_payment_id
+      - asaas_transfer_id
+      - dt_declaracao_pagamento
+      - dt_estorno
+      - fk_id_contratacao
+      - id
+      - pix_copia_cola
+      - pix_qr_code
+      - st_pagamento
+      - status_contratacao
+      - vl_servico
+    PaginatedAnuncioList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Anuncio'
+    PatchedAnuncio:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        distancia_km:
+          type: number
+          format: double
+          readOnly: true
+        nm_titulo:
+          type: string
+          maxLength: 100
+        nm_descricao:
+          type: string
+          maxLength: 2000
+        imagens: {}
+        dias_atendimento: {}
+        vl_preco:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        nr_latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,7})?$
+          nullable: true
+        nr_longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,7})?$
+          nullable: true
+        nm_area_atendimento:
+          type: string
+          maxLength: 100
+        nm_disponibilidade:
+          type: string
+          maxLength: 45
+        st_anuncio:
+          type: boolean
+        dt_criacao_anuncio:
+          type: string
+          format: date-time
+          readOnly: true
+        fk_id_usuario:
+          type: integer
+          readOnly: true
+        fk_id_categoria:
+          type: integer
+    PatchedAvaliacao:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        fk_id_contratacao:
+          type: integer
+        avaliador_nome:
+          type: string
+          readOnly: true
+        avaliado_nome:
+          type: string
+          readOnly: true
+        nr_nota:
+          type: integer
+          maximum: 5
+          minimum: 1
+          description: Nota de 1 a 5 estrelas
+        ds_comentario:
+          type: string
+          nullable: true
+        dt_criacao:
+          type: string
+          format: date-time
+          readOnly: true
+        avaliador:
+          type: integer
+          readOnly: true
+        avaliado:
+          type: integer
+          readOnly: true
+    PatchedCategoria:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nm_categoria:
+          type: string
+          maxLength: 45
+    PatchedCompromisso:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        titulo:
+          type: string
+          maxLength: 100
+        data:
+          type: string
+          format: date
+        hora:
+          type: string
+          format: time
+        duracao:
+          type: integer
+          maximum: 480
+          minimum: 30
+        observacoes:
+          type: string
+    PatchedContratacao:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        cliente_nome:
+          type: string
+          readOnly: true
+        anuncio_titulo:
+          type: string
+          readOnly: true
+        prestador_id:
+          type: integer
+          readOnly: true
+        chave_solicitacao:
+          type: string
+          nullable: true
+          maxLength: 64
+        contestado:
+          type: boolean
+          readOnly: true
+        motivo_contestacao:
+          type: string
+          readOnly: true
+        ds_solicitacao:
+          type: string
+        nm_endereco:
+          type: string
+          maxLength: 300
+        proposta_reagendamento:
+          readOnly: true
+          nullable: true
+        st_status:
+          allOf:
+          - $ref: '#/components/schemas/StStatusEnum'
+          readOnly: true
+        concluido_cliente:
+          type: boolean
+          readOnly: true
+        concluido_prestador:
+          type: boolean
+          readOnly: true
+        dt_criacao:
+          type: string
+          format: date-time
+          readOnly: true
+        dt_atualizacao:
+          type: string
+          format: date-time
+          readOnly: true
+        dt_agendamento:
+          type: string
+          format: date
+        hr_inicio:
+          type: string
+          format: time
+        hr_final:
+          type: string
+          format: time
+        nr_latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,7})?$
+          nullable: true
+        nr_longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,7})?$
+          nullable: true
+        fk_id_cliente:
+          type: integer
+          readOnly: true
+        fk_id_anuncio:
+          type: integer
+    PatchedServico:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        categorias_detalhes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Categoria'
+          readOnly: true
+        nm_servico:
+          type: string
+          maxLength: 100
+        ds_servico:
+          type: string
+          nullable: true
+        fk_id_anuncio:
+          type: integer
+        fk_id_usuario:
+          type: integer
+          readOnly: true
+        categorias:
+          type: array
+          items:
+            type: integer
+    PatchedUsuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Usuário
+          description: Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_
+            apenas.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Endereço de email
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        password:
+          type: string
+          writeOnly: true
+          title: Senha
+          maxLength: 128
+        nr_cpf:
+          type: string
+          nullable: true
+          maxLength: 14
+        nr_telefone:
+          type: string
+          nullable: true
+          maxLength: 15
+        ds_biografia:
+          type: string
+          nullable: true
+        tp_foto:
+          type: string
+          format: uri
+          nullable: true
+        id_tp_perfil:
+          $ref: '#/components/schemas/IdTpPerfilEnum'
+        first_name:
+          type: string
+          title: Primeiro nome
+          maxLength: 150
+        nm_cidade:
+          type: string
+          maxLength: 100
+        dt_nascimento:
+          type: string
+          format: date
+          nullable: true
+        fcm_token:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 255
+        chave_pix:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 100
+        tipo_chave_pix:
+          allOf:
+          - $ref: '#/components/schemas/TipoChavePixEnum'
+          writeOnly: true
+    PaymentsModeEnum:
+      enum:
+      - mock
+      - asaas
+      type: string
+      description: |-
+        * `mock` - mock
+        * `asaas` - asaas
+    PerfilPublico:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Usuário
+          description: Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_
+            apenas.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          title: Primeiro nome
+          maxLength: 150
+        ds_biografia:
+          type: string
+          nullable: true
+        nm_cidade:
+          type: string
+          maxLength: 100
+        tp_foto:
+          type: string
+          format: uri
+          nullable: true
+        id_tp_perfil:
+          $ref: '#/components/schemas/IdTpPerfilEnum'
+      required:
+      - id
+      - username
+    Protocolo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        assunto:
+          type: string
+          maxLength: 150
+        texto:
+          type: string
+          maxLength: 4000
+        alvo:
+          type: integer
+          nullable: true
+        criado:
+          type: string
+          format: date-time
+          readOnly: true
+        estado:
+          allOf:
+          - $ref: '#/components/schemas/EstadoEnum'
+          readOnly: true
+        resposta:
+          type: string
+          readOnly: true
+      required:
+      - assunto
+      - criado
+      - estado
+      - id
+      - resposta
+      - texto
+    Servico:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        categorias_detalhes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Categoria'
+          readOnly: true
+        nm_servico:
+          type: string
+          maxLength: 100
+        ds_servico:
+          type: string
+          nullable: true
+        fk_id_anuncio:
+          type: integer
+        fk_id_usuario:
+          type: integer
+          readOnly: true
+        categorias:
+          type: array
+          items:
+            type: integer
+      required:
+      - categorias
+      - categorias_detalhes
+      - fk_id_anuncio
+      - fk_id_usuario
+      - id
+      - nm_servico
+    StPagamentoEnum:
+      enum:
+      - aguardando
+      - processando
+      - retido
+      - liberado
+      - bloqueado
+      type: string
+      description: |-
+        * `aguardando` - Aguardando pagamento
+        * `processando` - Repasse em processamento
+        * `retido` - Retido
+        * `liberado` - Liberado
+        * `bloqueado` - Bloqueado
+    StStatusEnum:
+      enum:
+      - PENDENTE
+      - ACEITO
+      - RECUSADO
+      - CONCLUIDO
+      - CANCELADO
+      type: string
+      description: |-
+        * `PENDENTE` - Pendente
+        * `ACEITO` - Aceito
+        * `RECUSADO` - Recusado
+        * `CONCLUIDO` - Concluído
+        * `CANCELADO` - Cancelado
+    TipoChavePixEnum:
+      enum:
+      - EVP
+      - CPF
+      - CNPJ
+      - EMAIL
+      - PHONE
+      type: string
+      description: |-
+        * `EVP` - EVP
+        * `CPF` - CPF
+        * `CNPJ` - CNPJ
+        * `EMAIL` - EMAIL
+        * `PHONE` - PHONE
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Usuário
+          description: Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_
+            apenas.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Endereço de email
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        password:
+          type: string
+          writeOnly: true
+          title: Senha
+          maxLength: 128
+        nr_cpf:
+          type: string
+          nullable: true
+          maxLength: 14
+        nr_telefone:
+          type: string
+          nullable: true
+          maxLength: 15
+        ds_biografia:
+          type: string
+          nullable: true
+        tp_foto:
+          type: string
+          format: uri
+          nullable: true
+        id_tp_perfil:
+          $ref: '#/components/schemas/IdTpPerfilEnum'
+        first_name:
+          type: string
+          title: Primeiro nome
+          maxLength: 150
+        nm_cidade:
+          type: string
+          maxLength: 100
+        dt_nascimento:
+          type: string
+          format: date
+          nullable: true
+        fcm_token:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 255
+        chave_pix:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 100
+        tipo_chave_pix:
+          allOf:
+          - $ref: '#/components/schemas/TipoChavePixEnum'
+          writeOnly: true
+      required:
+      - id
+      - password
+      - username
+    Webhook:
+      type: object
+      properties:
+        event:
+          type: string
+        payment:
+          type: object
+          additionalProperties: {}
+        transfer:
+          type: object
+          additionalProperties: {}
+      required:
+      - event
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
