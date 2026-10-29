@@ -53,16 +53,22 @@ USE_I18N = True
 USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STORAGES = {'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'}}
+STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
+}
 # Storage privado: URLs assinadas temporárias para as fotos de perfil.
-# Nunca coloque a chave de service account no app Expo.
-FIREBASE_STORAGE_BUCKET = os.getenv('FIREBASE_STORAGE_BUCKET', '').strip().replace('gs://', '')
-FIREBASE_CREDENTIALS_JSON = os.getenv('FIREBASE_CREDENTIALS_JSON', '').strip()
-FIREBASE_CREDENTIALS = os.getenv('FIREBASE_CREDENTIALS', '').strip()
-if FIREBASE_STORAGE_BUCKET:
-    STORAGES['default'] = {'BACKEND': 'core.firebase_storage.FirebaseMediaStorage'}
+# As credenciais Cloudinary pertencem somente ao backend.
+CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME', '').strip()
+CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY', '').strip()
+CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET', '').strip()
+cloudinary_values = (CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET)
+if any(cloudinary_values) and not all(cloudinary_values):
+    raise RuntimeError('Configure CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY e CLOUDINARY_API_SECRET juntos.')
+if all(cloudinary_values):
+    STORAGES['default'] = {'BACKEND': 'core.cloudinary_storage.CloudinaryMediaStorage'}
 elif not DEBUG:
-    raise RuntimeError('FIREBASE_STORAGE_BUCKET é obrigatório em produção para persistir imagens.')
+    raise RuntimeError('Configure CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY e CLOUDINARY_API_SECRET em produção para persistir imagens.')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = Path(os.getenv('MEDIA_ROOT', str(BASE_DIR/'media')))
 REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'drf_spectacular.openapi.AutoSchema',

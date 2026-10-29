@@ -23,8 +23,5 @@ class CoreConfig(AppConfig):
                 cred = credentials.Certificate(json.loads(raw))
             else:
                 cred = credentials.Certificate(path)
-            options = {}
-            bucket = os.getenv('FIREBASE_STORAGE_BUCKET', '').replace('gs://', '').strip()
-            if bucket:
-                options['storageBucket'] = bucket
-            firebase_admin.initialize_app(cred, options)
+            # Firebase é usado apenas para notificações FCM; fotos usam Cloudinary.
+            firebase_admin.initialize_app(cred)
