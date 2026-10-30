@@ -8,6 +8,16 @@ DEBUG = os.getenv('DEBUG', 'true').lower() == 'true'
 SECRET_KEY = os.getenv('SECRET_KEY', 'local-demo-only-change-before-deployment-50-characters')
 if not DEBUG and SECRET_KEY.startswith('local-demo'):
     raise RuntimeError('Configure SECRET_KEY antes de executar em produção.')
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver').split(',')
+INSTALLED_APPS = ['daphne', 'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
+    'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles', 'channels',
+    'rest_framework', 'corsheaders', 'django_filters', 'drf_spectacular', 'core.apps.CoreConfig']
+MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware', 'django.middleware.security.SecurityMiddleware',
+=======
+>>>>>>> 5e662bf (backend atualizado)
 ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver').split(',') if host.strip()]
 if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
     ALLOWED_HOSTS.append(os.environ['RENDER_EXTERNAL_HOSTNAME'])
@@ -16,6 +26,10 @@ INSTALLED_APPS = ['daphne', 'django.contrib.admin', 'django.contrib.auth', 'djan
     'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles', 'channels',
     'rest_framework', 'corsheaders', 'django_filters', 'drf_spectacular', 'core.apps.CoreConfig']
 MIDDLEWARE = ['corsheaders.middleware.CorsMiddleware', 'django.middleware.security.SecurityMiddleware', 'whitenoise.middleware.WhiteNoiseMiddleware',
+<<<<<<< HEAD
+=======
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
     'django.contrib.sessions.middleware.SessionMiddleware', 'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware', 'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware', 'django.middleware.clickjacking.XFrameOptionsMiddleware']
@@ -26,6 +40,14 @@ TEMPLATES = [{'BACKEND':'django.template.backends.django.DjangoTemplates','DIRS'
     'django.contrib.auth.context_processors.auth', 'django.contrib.messages.context_processors.messages']}}]
 WSGI_APPLICATION = 'setup.wsgi.application'
 ASGI_APPLICATION = 'setup.asgi.application'
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+CHANNEL_LAYERS = {'default': {'BACKEND': 'channels.layers.InMemoryChannelLayer'}}
+if os.getenv('REDIS_URL'):
+    CHANNEL_LAYERS = {'default': {'BACKEND':'channels_redis.core.RedisChannelLayer','CONFIG':{'hosts':[os.environ['REDIS_URL']]}}}
+=======
+>>>>>>> 5e662bf (backend atualizado)
 # Redis compartilha mensagens de WebSocket entre os processos Daphne.
 REDIS_URL = os.getenv('REDIS_URL', '').strip()
 if REDIS_URL:
@@ -37,12 +59,25 @@ else:
     if not DEBUG:
         raise RuntimeError('REDIS_URL é obrigatório em produção para WebSockets.')
     CHANNEL_LAYERS = {'default': {'BACKEND': 'channels.layers.InMemoryChannelLayer'}}
+<<<<<<< HEAD
+=======
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
 DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': os.getenv('SQLITE_PATH', str(BASE_DIR/'db.sqlite3'))}}
 if os.getenv('DB_NAME'):
     DATABASES = {'default': {'ENGINE':'django.db.backends.postgresql','NAME':os.environ['DB_NAME'],
         'USER':os.getenv('DB_USER','postgres'),'PASSWORD':os.getenv('DB_PASSWORD',''),
+<<<<<<< HEAD
         'HOST':os.getenv('DB_HOST','localhost'),'PORT':os.getenv('DB_PORT','5432'),
         'OPTIONS': {'sslmode': os.environ['PGSSLMODE']} if os.getenv('PGSSLMODE') else {}}}
+=======
+<<<<<<< HEAD
+        'HOST':os.getenv('DB_HOST','localhost'),'PORT':os.getenv('DB_PORT','5432')}}
+=======
+        'HOST':os.getenv('DB_HOST','localhost'),'PORT':os.getenv('DB_PORT','5432'),
+        'OPTIONS': {'sslmode': os.environ['PGSSLMODE']} if os.getenv('PGSSLMODE') else {}}}
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
 AUTH_PASSWORD_VALIDATORS = [{'NAME':'django.contrib.auth.password_validation.'+name} for name in
     ['UserAttributeSimilarityValidator','MinimumLengthValidator','CommonPasswordValidator','NumericPasswordValidator']]
 AUTH_USER_MODEL = 'core.Usuario'
@@ -51,6 +86,12 @@ LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+STATIC_URL = 'static/'
+=======
+>>>>>>> 5e662bf (backend atualizado)
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STORAGES = {
@@ -69,6 +110,10 @@ if all(cloudinary_values):
     STORAGES['default'] = {'BACKEND': 'core.cloudinary_storage.CloudinaryMediaStorage'}
 elif not DEBUG:
     raise RuntimeError('Configure CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY e CLOUDINARY_API_SECRET em produção para persistir imagens.')
+<<<<<<< HEAD
+=======
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = Path(os.getenv('MEDIA_ROOT', str(BASE_DIR/'media')))
 REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS':'drf_spectacular.openapi.AutoSchema',
@@ -87,12 +132,26 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER','')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD','')
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS','false').lower() == 'true'
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL','tasker@localhost')
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL','memory://')
+CELERY_TASK_ALWAYS_EAGER = not bool(os.getenv('CELERY_BROKER_URL'))
+CELERY_TASK_EAGER_PROPAGATES = False
+CELERY_TASK_IGNORE_RESULT = True
+if not DEBUG:
+=======
+>>>>>>> 5e662bf (backend atualizado)
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL') or REDIS_URL or 'memory://'
 CELERY_TASK_ALWAYS_EAGER = not bool(os.getenv('CELERY_BROKER_URL') or REDIS_URL)
 CELERY_TASK_EAGER_PROPAGATES = False
 CELERY_TASK_IGNORE_RESULT = True
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+<<<<<<< HEAD
+=======
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_CONTENT_TYPE_NOSNIFF = True

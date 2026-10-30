@@ -27,8 +27,18 @@ class AsaasService:
             raise AsaasError('Falha na comunicação com o Asaas. Confira o painel antes de tentar novamente.') from exc
     def criar_cliente(self, usuario):
         if self.mock: return {'id':'mock_customer_'+str(usuario.id)}
+<<<<<<< HEAD
         if not (usuario.nr_cnpj or usuario.nr_cpf): raise AsaasError('Informe CPF/CNPJ antes de gerar uma cobrança.')
         return self._post('/customers', {'name': usuario.username, 'cpfCnpj':usuario.nr_cnpj or usuario.nr_cpf,
+=======
+<<<<<<< HEAD
+        if not usuario.nr_cpf: raise AsaasError('Informe CPF/CNPJ antes de gerar uma cobrança.')
+        return self._post('/customers', {'name': usuario.username, 'cpfCnpj':usuario.nr_cpf,
+=======
+        if not (usuario.nr_cnpj or usuario.nr_cpf): raise AsaasError('Informe CPF/CNPJ antes de gerar uma cobrança.')
+        return self._post('/customers', {'name': usuario.username, 'cpfCnpj':usuario.nr_cnpj or usuario.nr_cpf,
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
             'email':usuario.email, 'mobilePhone':usuario.nr_telefone or ''})
     def criar_cobranca(self, cliente_id_asaas, valor, descricao, referencia):
         if self.mock: return {'id':'mock_payment_'+str(uuid4())}

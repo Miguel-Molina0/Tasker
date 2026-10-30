@@ -6,6 +6,15 @@ __pycache__/
 db.sqlite3
 media/
 firebase_credentials.json
+<<<<<<< HEAD
 
 *service-account*.json
 *firebase*adminsdk*.json
+=======
+<<<<<<< HEAD
+=======
+
+*service-account*.json
+*firebase*adminsdk*.json
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)

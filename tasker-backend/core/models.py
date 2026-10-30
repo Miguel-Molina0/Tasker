@@ -13,7 +13,14 @@ class Usuario(AbstractUser):
     ]
     
     nr_cpf = models.CharField(max_length=14, unique=True, null=True, blank=True)
+<<<<<<< HEAD
     nr_cnpj = models.CharField(max_length=14, unique=True, null=True, blank=True)
+=======
+<<<<<<< HEAD
+=======
+    nr_cnpj = models.CharField(max_length=14, unique=True, null=True, blank=True)
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
     nr_telefone = models.CharField(max_length=15, null=True, blank=True)
     ds_biografia = models.TextField(blank=True, null=True)
     tp_foto = models.ImageField(upload_to='perfis/', blank=True, null=True)
@@ -140,7 +147,15 @@ class Calendario(models.Model):
     fk_id_contratacao = models.ForeignKey(Contratacao, on_delete=models.CASCADE)
 
 class Avaliacao(models.Model):
+<<<<<<< HEAD
     
+=======
+<<<<<<< HEAD
+    # Alterado de OneToOneField para ForeignKey
+=======
+    
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
     fk_id_contratacao = models.ForeignKey(
         'Contratacao',
         on_delete=models.CASCADE,

@@ -22,7 +22,15 @@ class UsuarioSerializer(serializers.ModelSerializer):
     tp_foto = Base64ImageField(required=False, allow_null=True)
     class Meta:
         model = Usuario
+<<<<<<< HEAD
         fields = ['id','username','email','password','nr_cpf','nr_cnpj','nr_telefone','ds_biografia','tp_foto','id_tp_perfil','first_name','nm_cidade','dt_nascimento',
+=======
+<<<<<<< HEAD
+        fields = ['id','username','email','password','nr_cpf','nr_telefone','ds_biografia','tp_foto','id_tp_perfil','first_name','nm_cidade','dt_nascimento',
+=======
+        fields = ['id','username','email','password','nr_cpf','nr_cnpj','nr_telefone','ds_biografia','tp_foto','id_tp_perfil','first_name','nm_cidade','dt_nascimento',
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
                   'fcm_token','chave_pix','tipo_chave_pix']
         extra_kwargs = {'password': {'write_only':True, 'required':True}, 'fcm_token':{'write_only':True},
                         'chave_pix':{'write_only':True}, 'tipo_chave_pix':{'write_only':True}}
@@ -43,6 +51,11 @@ class UsuarioSerializer(serializers.ModelSerializer):
             age = today.year-value.year-((today.month,today.day)<(value.month,value.day))
             if age < 18 or value.year < 1900: raise serializers.ValidationError('É necessário ter 18 anos ou mais.')
         return value
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 5e662bf (backend atualizado)
     def validate(self, attrs):
         perfil = attrs.get('id_tp_perfil', getattr(self.instance, 'id_tp_perfil', 'contratante'))
         cpf = attrs.get('nr_cpf', getattr(self.instance, 'nr_cpf', None))
@@ -71,6 +84,10 @@ class UsuarioSerializer(serializers.ModelSerializer):
             attrs['nr_cpf'] = digits(cpf)
             attrs['nr_cnpj'] = None
         return attrs
+<<<<<<< HEAD
+=======
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
     def create(self, validated_data):
         password = validated_data.pop('password')
         return Usuario.objects.create_user(password=password, **validated_data)

@@ -29,6 +29,7 @@ export function cpfValid(value: string) {
         return (digit === 10 ? 0 : digit) === Number(cpf[n]);
     });
 }
+
 export function cnpjValid(value: string) {
     const d = value.replace(/\D/g, '');
     if (d.length !== 14 || /^(\d)\1{13}$/.test(d)) return false;
@@ -41,6 +42,7 @@ export function cnpjValid(value: string) {
         return (digit === 10 ? 0 : digit) === Number(d[12 + offset]);
     });
 }
+
 function AuthField({ label, icon, trailingAction, ...props }: TextInputProps & {
     label: string;
     icon: IconName;
@@ -214,7 +216,15 @@ export function LoginScreen() {
     </AuthLayout>);
 }
 export function RegisterScreen() {
+<<<<<<< HEAD
     const { register, tell } = useStore(), c = useColors(), [role, setRole] = useState("Cliente"), [name, setName] = useState(""), [email, setEmail] = useState(""), [phone, setPhone] = useState(""), [cpf, setCpf] = useState(""), [cnpj, setCnpj] = useState(""), [birth, setBirth] = useState(""), [city, setCity] = useState("Mongaguá"), [password, setPassword] = useState(""), [confirm, setConfirm] = useState(""), [showPassword, setShowPassword] = useState(false), [showConfirm, setShowConfirm] = useState(false), [terms, setTerms] = useState(false), [busy, setBusy] = useState(false);
+=======
+<<<<<<< HEAD
+    const { register, tell } = useStore(), c = useColors(), [role, setRole] = useState("Cliente"), [name, setName] = useState(""), [email, setEmail] = useState(""), [phone, setPhone] = useState(""), [cpf, setCpf] = useState(""), [birth, setBirth] = useState(""), [city, setCity] = useState("Mongaguá"), [password, setPassword] = useState(""), [confirm, setConfirm] = useState(""), [showPassword, setShowPassword] = useState(false), [showConfirm, setShowConfirm] = useState(false), [terms, setTerms] = useState(false), [busy, setBusy] = useState(false);
+=======
+    const { register, tell } = useStore(), c = useColors(), [role, setRole] = useState("Cliente"), [name, setName] = useState(""), [email, setEmail] = useState(""), [phone, setPhone] = useState(""), [cpf, setCpf] = useState(""), [cnpj, setCnpj] = useState(""), [birth, setBirth] = useState(""), [city, setCity] = useState("Mongaguá"), [password, setPassword] = useState(""), [confirm, setConfirm] = useState(""), [showPassword, setShowPassword] = useState(false), [showConfirm, setShowConfirm] = useState(false), [terms, setTerms] = useState(false), [busy, setBusy] = useState(false);
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
     async function save() {
         setBusy(true);
         try {
@@ -222,10 +232,21 @@ export function RegisterScreen() {
                 throw new Error("Informe seu nome.");
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
                 throw new Error("Informe um email válido.");
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            if (!cpfValid(cpf))
+                throw new Error("Confira os 11 dígitos do CPF.");
+=======
+>>>>>>> 5e662bf (backend atualizado)
             if (role === "Cliente" && !cpfValid(cpf))
                 throw new Error("Informe um CPF válido.");
             if (role !== "Cliente" && !cnpjValid(cnpj))
                 throw new Error("Informe um CNPJ válido.");
+<<<<<<< HEAD
+=======
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
             if (!/^\d{10,11}$/.test(phone.replace(/\D/g, "")))
                 throw new Error("Informe telefone com DDD.");
             const date = parseDate(birth);
@@ -242,7 +263,15 @@ export function RegisterScreen() {
                 throw new Error("As senhas precisam ser iguais.");
             if (!terms)
                 throw new Error("Leia e aceite os termos da demonstração.");
+<<<<<<< HEAD
             await register({name:name.trim(),email:email.trim().toLowerCase(),password,phone,cpf,cnpj,birth:date,city:city.trim(),role:role==='Cliente'?'cliente':'profissional'});
+=======
+<<<<<<< HEAD
+            await register({name:name.trim(),email:email.trim().toLowerCase(),password,phone,cpf,birth:date,city:city.trim(),role:role==='Cliente'?'cliente':'profissional'});
+=======
+            await register({name:name.trim(),email:email.trim().toLowerCase(),password,phone,cpf,cnpj,birth:date,city:city.trim(),role:role==='Cliente'?'cliente':'profissional'});
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
             router.replace('/');
         }
         catch (e) {
@@ -303,7 +332,15 @@ export function RegisterScreen() {
       </View>
       <FormSection title="Sobre você" icon="person-circle-outline">
         <AuthField label="Nome completo" icon="person-outline" placeholder="Como você se chama?" value={name} onChangeText={setName} autoComplete="name" autoCapitalize="words"/>
+<<<<<<< HEAD
         {role === "Cliente" ? <AuthField label="CPF" icon="card-outline" placeholder="000.000.000-00" value={cpf} onChangeText={setCpf} keyboardType="number-pad" maxLength={14}/> : <AuthField label="CNPJ" icon="card-outline" placeholder="00.000.000/0000-00" value={cnpj} onChangeText={setCnpj} keyboardType="number-pad" maxLength={18}/>}
+=======
+<<<<<<< HEAD
+        <AuthField label="CPF (validação de formato)" icon="card-outline" placeholder="000.000.000-00" value={cpf} onChangeText={setCpf} keyboardType="number-pad" maxLength={14}/>
+=======
+        {role === "Cliente" ? <AuthField label="CPF" icon="card-outline" placeholder="000.000.000-00" value={cpf} onChangeText={setCpf} keyboardType="number-pad" maxLength={14}/> : <AuthField label="CNPJ" icon="card-outline" placeholder="00.000.000/0000-00" value={cnpj} onChangeText={setCnpj} keyboardType="number-pad" maxLength={18}/>}
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
         <AuthField label="Nascimento (DD/MM/AAAA)" icon="calendar-outline" placeholder="DD/MM/AAAA" value={birth} onChangeText={setBirth} keyboardType="numbers-and-punctuation" maxLength={10}/>
         <Txt muted style={{ fontSize: 12, lineHeight: 18, marginTop: -8 }}>
           Você precisa ter 18 anos ou mais.

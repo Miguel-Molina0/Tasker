@@ -29,7 +29,15 @@ class IntegratedEndpointsTests(TestCase):
         self.client.force_authenticate(None)
         r=self.client.get(f'/api/perfis/{self.u.pk}/')
         self.assertEqual(r.status_code,200)
+<<<<<<< HEAD
         for field in ['email','nr_cpf','nr_cnpj','nr_telefone','chave_pix','fcm_token','password']: self.assertNotIn(field,r.data)
+=======
+<<<<<<< HEAD
+        for field in ['email','nr_cpf','nr_telefone','chave_pix','fcm_token','password']: self.assertNotIn(field,r.data)
+=======
+        for field in ['email','nr_cpf','nr_cnpj','nr_telefone','chave_pix','fcm_token','password']: self.assertNotIn(field,r.data)
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
     def test_login_email(self):
         self.client.force_authenticate(None)
         r=self.client.post('/api/token/',{'username':'CUSTOMER@test.com','password':'Testing!8345'})

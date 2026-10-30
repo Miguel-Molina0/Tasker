@@ -3,7 +3,15 @@ from django.contrib.auth.admin import UserAdmin
 from .models import Usuario, Categoria, Anuncio, Servico, Contratacao, Pagamento, Calendario, Avaliacao, Mensagem
 @admin.register(Usuario)
 class UsuarioAdmin(UserAdmin):
+<<<<<<< HEAD
     fieldsets = UserAdmin.fieldsets + (('Tasker', {'fields':('id_tp_perfil','nr_cpf','nr_cnpj','nr_telefone','ds_biografia','tp_foto','chave_pix','tipo_chave_pix','fcm_token','asaas_customer_id')}),)
+=======
+<<<<<<< HEAD
+    fieldsets = UserAdmin.fieldsets + (('Tasker', {'fields':('id_tp_perfil','nr_cpf','nr_telefone','ds_biografia','tp_foto','chave_pix','tipo_chave_pix','fcm_token','asaas_customer_id')}),)
+=======
+    fieldsets = UserAdmin.fieldsets + (('Tasker', {'fields':('id_tp_perfil','nr_cpf','nr_cnpj','nr_telefone','ds_biografia','tp_foto','chave_pix','tipo_chave_pix','fcm_token','asaas_customer_id')}),)
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
 @admin.register(Pagamento)
 class PagamentoAdmin(admin.ModelAdmin):
     list_display = ['id','fk_id_contratacao','vl_servico','st_pagamento','dt_declaracao_pagamento','repasse_tentado']

@@ -6,7 +6,15 @@ import { Action, State, User } from './domain';
 import { api } from './api';
 import { applyRemoteAction, emptyState, loadSnapshot, PaymentMode } from './remote';
 import { dark, light } from './theme';
+<<<<<<< HEAD
 type Registration = {name:string;email:string;password:string;phone:string;cpf?:string;cnpj?:string;birth:string;city:string;role:User['role']};
+=======
+<<<<<<< HEAD
+type Registration = {name:string;email:string;password:string;phone:string;cpf:string;birth:string;city:string;role:User['role']};
+=======
+type Registration = {name:string;email:string;password:string;phone:string;cpf?:string;cnpj?:string;birth:string;city:string;role:User['role']};
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
 type Store = {
   state:State; user:User|undefined; ready:boolean; busy:boolean; mode:PaymentMode; connectionError:string;
   act(a:Action):Promise<string|void>; run(fn:()=>unknown|Promise<unknown>,success?:string):Promise<boolean>;
@@ -49,7 +57,15 @@ export function StoreProvider({children}:{children:React.ReactNode}) {
   }
   async function register(data:Registration) {
     await api.request('usuarios/','POST',{username:data.email.toLowerCase(),email:data.email.toLowerCase(),password:data.password,
+<<<<<<< HEAD
       first_name:data.name,nr_telefone:data.phone,...(data.role==='profissional' ? {nr_cnpj:(data.cnpj||'').replace(/\D/g,'')} : {nr_cpf:(data.cpf||'').replace(/\D/g,'')}),dt_nascimento:data.birth,nm_cidade:data.city,
+=======
+<<<<<<< HEAD
+      first_name:data.name,nr_telefone:data.phone,nr_cpf:data.cpf.replace(/\D/g,''),dt_nascimento:data.birth,nm_cidade:data.city,
+=======
+      first_name:data.name,nr_telefone:data.phone,...(data.role==='profissional' ? {nr_cnpj:(data.cnpj||'').replace(/\D/g,'')} : {nr_cpf:(data.cpf||'').replace(/\D/g,'')}),dt_nascimento:data.birth,nm_cidade:data.city,
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
       id_tp_perfil:data.role==='profissional'?'autonomo':'contratante'},false);
     try { await login(data.email,data.password); }
     catch { throw new Error('Conta criada no servidor. Faça login; não repita o cadastro.'); }

@@ -209,7 +209,15 @@ class AccountIntegrationMixin:
                 raise ValidationError('Finalize ou cancele os serviços ativos antes de excluir a conta.')
             # Histórico financeiro é preservado; conta fica inativa e sem perfil público.
             user.is_active=False;user.username='removido_'+uuid4().hex;user.email='';user.first_name='';user.last_name=''
+<<<<<<< HEAD
             user.nr_cpf=None;user.nr_cnpj=None;user.nr_telefone=None;user.nm_cidade='';user.ds_biografia='';user.dt_nascimento=None;user.tp_foto=None
+=======
+<<<<<<< HEAD
+            user.nr_cpf=None;user.nr_telefone=None;user.nm_cidade='';user.ds_biografia='';user.dt_nascimento=None;user.tp_foto=None
+=======
+            user.nr_cpf=None;user.nr_cnpj=None;user.nr_telefone=None;user.nm_cidade='';user.ds_biografia='';user.dt_nascimento=None;user.tp_foto=None
+>>>>>>> 1acdd66 (backend atualizado)
+>>>>>>> 5e662bf (backend atualizado)
             user.fcm_token=None;user.chave_pix=None;user.set_unusable_password();user.save()
             from .models import Anuncio
             Anuncio.objects.filter(fk_id_usuario=user).update(st_anuncio=False)

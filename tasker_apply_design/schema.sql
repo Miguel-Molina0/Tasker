@@ -1,0 +1,2 @@
+-- Schema de referência. O app.py cria as tabelas automaticamente na inicialização.
+-- Valores monetários são armazenados em centavos (BIGINT), evitando erros de ponto flutuante.
