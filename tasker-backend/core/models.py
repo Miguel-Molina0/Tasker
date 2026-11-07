@@ -7,20 +7,17 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Usuario(AbstractUser):
     nm_cidade = models.CharField(max_length=100, blank=True, default="")
     dt_nascimento = models.DateField(null=True, blank=True)
+    area_atuacao = models.CharField(max_length=80, blank=True, default="")
+    instagram = models.URLField(max_length=250, blank=True, default="")
+    facebook = models.URLField(max_length=250, blank=True, default="")
+    linkedin = models.URLField(max_length=250, blank=True, default="")
     PERFIL_CHOICES = [
         ('autonomo', 'Autônomo'),
         ('contratante', 'Contratante'),
     ]
     
     nr_cpf = models.CharField(max_length=14, unique=True, null=True, blank=True)
-<<<<<<< HEAD
     nr_cnpj = models.CharField(max_length=14, unique=True, null=True, blank=True)
-=======
-<<<<<<< HEAD
-=======
-    nr_cnpj = models.CharField(max_length=14, unique=True, null=True, blank=True)
->>>>>>> 1acdd66 (backend atualizado)
->>>>>>> 5e662bf (backend atualizado)
     nr_telefone = models.CharField(max_length=15, null=True, blank=True)
     ds_biografia = models.TextField(blank=True, null=True)
     tp_foto = models.ImageField(upload_to='perfis/', blank=True, null=True)
@@ -147,15 +144,7 @@ class Calendario(models.Model):
     fk_id_contratacao = models.ForeignKey(Contratacao, on_delete=models.CASCADE)
 
 class Avaliacao(models.Model):
-<<<<<<< HEAD
     
-=======
-<<<<<<< HEAD
-    # Alterado de OneToOneField para ForeignKey
-=======
-    
->>>>>>> 1acdd66 (backend atualizado)
->>>>>>> 5e662bf (backend atualizado)
     fk_id_contratacao = models.ForeignKey(
         'Contratacao',
         on_delete=models.CASCADE,
