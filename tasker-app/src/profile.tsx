@@ -4,6 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { View } from "react-native";
+import { BAIXADA_CITIES, WORK_AREAS, OptionSelect } from "./registration-options";
 import { hash, passwordError } from "./auth";
 import { useStore } from "./store";
 import { Avatar, Badge, Button, Card, Confirm, Empty, Field, go, InfoRow, MenuItem, Row, Shell, Title, Txt, VisualSteps, } from "./ui";
@@ -85,7 +86,7 @@ export function ProfileSettingsScreen() {
     </Shell>);
 }
 export function EditProfileScreen() {
-    const { user, act, run, tell } = useStore(), [name, setName] = useState(user?.name || ""), [bio, setBio] = useState(user?.bio || ""), [city, setCity] = useState(user?.city || ""), [phone, setPhone] = useState(user?.phone || ""), [avatar, setAvatar] = useState(user?.avatar), [busy, setBusy] = useState(false);
+    const { user, act, run, tell } = useStore(), [name, setName] = useState(user?.name || ""), [bio, setBio] = useState(user?.bio || ""), [city, setCity] = useState(user?.city || ""), [phone, setPhone] = useState(user?.phone || ""), [workArea,setWorkArea] = useState(user?.workArea || ""), [instagram,setInstagram] = useState(user?.instagram || ""), [facebook,setFacebook] = useState(user?.facebook || ""), [linkedin,setLinkedin] = useState(user?.linkedin || ""), [avatar, setAvatar] = useState(user?.avatar), [busy, setBusy] = useState(false);
     async function pick() {
         try {
             setBusy(true);
@@ -123,15 +124,23 @@ export function EditProfileScreen() {
       </View>
       <Field label="Nome" value={name} onChangeText={setName}/>
       <Field label="Biografia" value={bio} onChangeText={setBio} multiline maxLength={500}/>
-      <Field label="Cidade" value={city} onChangeText={setCity}/>
+      <OptionSelect label="Cidade da Baixada Santista" value={city} options={BAIXADA_CITIES} onChange={setCity}/>
+      {user?.role === "profissional" && <OptionSelect label="Área de atuação" value={workArea} options={WORK_AREAS} onChange={setWorkArea}/>}
       <Field label="Telefone com DDD" value={phone} onChangeText={setPhone} keyboardType="phone-pad"/>
       <Txt muted>Email: {user?.email}</Txt>
+      <Field label="Instagram (link https://...)" value={instagram} onChangeText={setInstagram} autoCapitalize="none" keyboardType="url"/>
+      <Field label="Facebook (link https://...)" value={facebook} onChangeText={setFacebook} autoCapitalize="none" keyboardType="url"/>
+      <Field label="LinkedIn (link https://...)" value={linkedin} onChangeText={setLinkedin} autoCapitalize="none" keyboardType="url"/>
       <Button title="Salvar perfil" icon="checkmark-outline" onPress={async () => {
             if (await run(async () => {
                 if (name.trim().length < 3 ||
-                    !city.trim() ||
+                    !BAIXADA_CITIES.includes(city) ||
                     !/^\d{10,11}$/.test(phone.replace(/\D/g, "")))
-                    throw new Error("Confira nome, cidade e telefone com DDD.");
+                    throw new Error("Confira nome, cidade da Baixada Santista e telefone com DDD.");
+                if(user?.role === "profissional" && workArea && !WORK_AREAS.includes(workArea)) throw new Error("Selecione uma área de atuação válida.");
+                for(const [label,value,host] of [["Instagram",instagram,"instagram.com"],["Facebook",facebook,"facebook.com"],["LinkedIn",linkedin,"linkedin.com"]]) {
+                  if(value.trim()) { try {const url=new URL(value.trim()); if(url.protocol!=="https:" || (url.hostname!==host && !url.hostname.endsWith("."+host))) throw new Error();} catch {throw new Error(`Informe um link HTTPS válido de ${label}.`);} }
+                }
                 await act({
                     type: "profile",
                     patch: {
@@ -139,6 +148,8 @@ export function EditProfileScreen() {
                         bio: bio.trim(),
                         city: city.trim(),
                         phone,
+                        workArea:user?.role === "profissional" ? workArea : "",
+                        instagram:instagram.trim(),facebook:facebook.trim(),linkedin:linkedin.trim(),
                         avatar,
                     },
                 });

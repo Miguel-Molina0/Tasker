@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Image, Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View, } from "react-native";
+import { Image, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View, } from "react-native";
 import { Ad, money, rating, Review, User } from "./domain";
 import { useStore } from "./store";
 import { brand } from "./theme";
@@ -203,7 +203,7 @@ function ProfileView({ own = false, personId, }: {
               <Text style={styles.profileRole}>
                 {person.role === "cliente"
                 ? "Cliente"
-                : category || "Profissional autônomo"}
+                : person.workArea || category || "Profissional autônomo"}
               </Text>
               {person.bio ? (<Text style={styles.profileBio} numberOfLines={2}>
                   {person.bio}
@@ -237,6 +237,7 @@ function ProfileView({ own = false, personId, }: {
             </View>
           </View>
           <View style={styles.profileContent}>
+            {(person.instagram || person.facebook || person.linkedin) && <View style={{paddingVertical:12,gap:9}}><Txt style={{fontWeight:"700"}}>Redes sociais</Txt><View style={{flexDirection:"row",flexWrap:"wrap",gap:8}}>{([["Instagram",person.instagram,"logo-instagram"],["Facebook",person.facebook,"logo-facebook"],["LinkedIn",person.linkedin,"logo-linkedin"]] as const).filter(([,url])=>!!url).map(([label,url,icon])=><Pressable key={label} accessibilityRole="link" onPress={()=>{if(url) void Linking.openURL(url);}} style={{padding:10,borderRadius:12,backgroundColor:c.panel,flexDirection:"row",alignItems:"center",gap:6}}><Ionicons name={icon} size={18} color={c.accent}/><Txt>{label}</Txt></Pressable>)}</View></View>}
             <View style={styles.summary}>
               <Ionicons name={reviews.length ? "star" : "star-outline"} size={16} color={c.accent} accessible={false}/>
               <Txt style={{ fontSize: 13, fontWeight: "600" }}>

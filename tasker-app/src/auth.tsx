@@ -6,7 +6,8 @@ import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { Pressable, TextInput, TextInputProps, View } from "react-native";
 import { AuthLayout } from "./auth-layout";
-import { parseDate, uid, validDate } from "./domain";
+import { BAIXADA_CITIES, WORK_AREAS, OptionSelect, BirthDateSelect } from "./registration-options";
+import { uid, validDate } from "./domain";
 import { useStore } from "./store";
 import { Button, go, IconName, IconButton, InfoRow, Title, Txt, useColors, } from "./ui";
 export const demoPassword = "Tasker@123";
@@ -29,7 +30,6 @@ export function cpfValid(value: string) {
         return (digit === 10 ? 0 : digit) === Number(cpf[n]);
     });
 }
-
 export function cnpjValid(value: string) {
     const d = value.replace(/\D/g, '');
     if (d.length !== 14 || /^(\d)\1{13}$/.test(d)) return false;
@@ -42,7 +42,6 @@ export function cnpjValid(value: string) {
         return (digit === 10 ? 0 : digit) === Number(d[12 + offset]);
     });
 }
-
 function AuthField({ label, icon, trailingAction, ...props }: TextInputProps & {
     label: string;
     icon: IconName;
@@ -216,15 +215,7 @@ export function LoginScreen() {
     </AuthLayout>);
 }
 export function RegisterScreen() {
-<<<<<<< HEAD
-    const { register, tell } = useStore(), c = useColors(), [role, setRole] = useState("Cliente"), [name, setName] = useState(""), [email, setEmail] = useState(""), [phone, setPhone] = useState(""), [cpf, setCpf] = useState(""), [cnpj, setCnpj] = useState(""), [birth, setBirth] = useState(""), [city, setCity] = useState("Mongaguá"), [password, setPassword] = useState(""), [confirm, setConfirm] = useState(""), [showPassword, setShowPassword] = useState(false), [showConfirm, setShowConfirm] = useState(false), [terms, setTerms] = useState(false), [busy, setBusy] = useState(false);
-=======
-<<<<<<< HEAD
-    const { register, tell } = useStore(), c = useColors(), [role, setRole] = useState("Cliente"), [name, setName] = useState(""), [email, setEmail] = useState(""), [phone, setPhone] = useState(""), [cpf, setCpf] = useState(""), [birth, setBirth] = useState(""), [city, setCity] = useState("Mongaguá"), [password, setPassword] = useState(""), [confirm, setConfirm] = useState(""), [showPassword, setShowPassword] = useState(false), [showConfirm, setShowConfirm] = useState(false), [terms, setTerms] = useState(false), [busy, setBusy] = useState(false);
-=======
-    const { register, tell } = useStore(), c = useColors(), [role, setRole] = useState("Cliente"), [name, setName] = useState(""), [email, setEmail] = useState(""), [phone, setPhone] = useState(""), [cpf, setCpf] = useState(""), [cnpj, setCnpj] = useState(""), [birth, setBirth] = useState(""), [city, setCity] = useState("Mongaguá"), [password, setPassword] = useState(""), [confirm, setConfirm] = useState(""), [showPassword, setShowPassword] = useState(false), [showConfirm, setShowConfirm] = useState(false), [terms, setTerms] = useState(false), [busy, setBusy] = useState(false);
->>>>>>> 1acdd66 (backend atualizado)
->>>>>>> 5e662bf (backend atualizado)
+    const { register, tell } = useStore(), c = useColors(), [role, setRole] = useState("Cliente"), [name, setName] = useState(""), [email, setEmail] = useState(""), [phone, setPhone] = useState(""), [cpf, setCpf] = useState(""), [cnpj, setCnpj] = useState(""), [birth, setBirth] = useState("") , [workArea, setWorkArea] = useState(""), [city, setCity] = useState("Mongaguá"), [password, setPassword] = useState(""), [confirm, setConfirm] = useState(""), [showPassword, setShowPassword] = useState(false), [showConfirm, setShowConfirm] = useState(false), [terms, setTerms] = useState(false), [busy, setBusy] = useState(false);
     async function save() {
         setBusy(true);
         try {
@@ -232,46 +223,29 @@ export function RegisterScreen() {
                 throw new Error("Informe seu nome.");
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
                 throw new Error("Informe um email válido.");
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-            if (!cpfValid(cpf))
-                throw new Error("Confira os 11 dígitos do CPF.");
-=======
->>>>>>> 5e662bf (backend atualizado)
             if (role === "Cliente" && !cpfValid(cpf))
                 throw new Error("Informe um CPF válido.");
             if (role !== "Cliente" && !cnpjValid(cnpj))
                 throw new Error("Informe um CNPJ válido.");
-<<<<<<< HEAD
-=======
->>>>>>> 1acdd66 (backend atualizado)
->>>>>>> 5e662bf (backend atualizado)
             if (!/^\d{10,11}$/.test(phone.replace(/\D/g, "")))
                 throw new Error("Informe telefone com DDD.");
-            const date = parseDate(birth);
+            const date = birth;
             if (!validDate(date))
                 throw new Error("Informe sua data de nascimento.");
             const d = new Date(date + "T12:00:00"), today = new Date(), adult = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate(), 23, 59);
             if (d > adult || d.getFullYear() < 1900)
                 throw new Error("É necessário ter 18 anos ou mais.");
-            if (!city.trim())
-                throw new Error("Informe sua cidade.");
+            if (!BAIXADA_CITIES.includes(city))
+                throw new Error("Escolha uma cidade da Baixada Santista.");
+            if (role !== "Cliente" && !WORK_AREAS.includes(workArea))
+                throw new Error("Escolha sua área de atuação.");
             if (passwordError(password))
                 throw new Error(passwordError(password));
             if (password !== confirm)
                 throw new Error("As senhas precisam ser iguais.");
             if (!terms)
                 throw new Error("Leia e aceite os termos da demonstração.");
-<<<<<<< HEAD
-            await register({name:name.trim(),email:email.trim().toLowerCase(),password,phone,cpf,cnpj,birth:date,city:city.trim(),role:role==='Cliente'?'cliente':'profissional'});
-=======
-<<<<<<< HEAD
-            await register({name:name.trim(),email:email.trim().toLowerCase(),password,phone,cpf,birth:date,city:city.trim(),role:role==='Cliente'?'cliente':'profissional'});
-=======
-            await register({name:name.trim(),email:email.trim().toLowerCase(),password,phone,cpf,cnpj,birth:date,city:city.trim(),role:role==='Cliente'?'cliente':'profissional'});
->>>>>>> 1acdd66 (backend atualizado)
->>>>>>> 5e662bf (backend atualizado)
+            await register({name:name.trim(),email:email.trim().toLowerCase(),password,phone,cpf,cnpj,birth:date,city:city.trim(),workArea:role!=="Cliente"?workArea:"",role:role==='Cliente'?'cliente':'profissional'});
             router.replace('/');
         }
         catch (e) {
@@ -332,21 +306,14 @@ export function RegisterScreen() {
       </View>
       <FormSection title="Sobre você" icon="person-circle-outline">
         <AuthField label="Nome completo" icon="person-outline" placeholder="Como você se chama?" value={name} onChangeText={setName} autoComplete="name" autoCapitalize="words"/>
-<<<<<<< HEAD
         {role === "Cliente" ? <AuthField label="CPF" icon="card-outline" placeholder="000.000.000-00" value={cpf} onChangeText={setCpf} keyboardType="number-pad" maxLength={14}/> : <AuthField label="CNPJ" icon="card-outline" placeholder="00.000.000/0000-00" value={cnpj} onChangeText={setCnpj} keyboardType="number-pad" maxLength={18}/>}
-=======
-<<<<<<< HEAD
-        <AuthField label="CPF (validação de formato)" icon="card-outline" placeholder="000.000.000-00" value={cpf} onChangeText={setCpf} keyboardType="number-pad" maxLength={14}/>
-=======
-        {role === "Cliente" ? <AuthField label="CPF" icon="card-outline" placeholder="000.000.000-00" value={cpf} onChangeText={setCpf} keyboardType="number-pad" maxLength={14}/> : <AuthField label="CNPJ" icon="card-outline" placeholder="00.000.000/0000-00" value={cnpj} onChangeText={setCnpj} keyboardType="number-pad" maxLength={18}/>}
->>>>>>> 1acdd66 (backend atualizado)
->>>>>>> 5e662bf (backend atualizado)
-        <AuthField label="Nascimento (DD/MM/AAAA)" icon="calendar-outline" placeholder="DD/MM/AAAA" value={birth} onChangeText={setBirth} keyboardType="numbers-and-punctuation" maxLength={10}/>
+        <BirthDateSelect value={birth} onChange={setBirth}/>
         <Txt muted style={{ fontSize: 12, lineHeight: 18, marginTop: -8 }}>
           Você precisa ter 18 anos ou mais.
         </Txt>
         <AuthField label="Telefone com DDD" icon="call-outline" placeholder="(11) 99999-9999" value={phone} onChangeText={setPhone} keyboardType="phone-pad" autoComplete="tel"/>
-        <AuthField label="Cidade" icon="location-outline" placeholder="Sua cidade" value={city} onChangeText={setCity} autoCapitalize="words"/>
+        <OptionSelect label="Cidade da Baixada Santista" value={city} options={BAIXADA_CITIES} onChange={setCity}/>
+        {role !== "Cliente" && <OptionSelect label="Área de atuação" value={workArea} options={WORK_AREAS} onChange={setWorkArea}/>}
       </FormSection>
       <View style={{ height: 1, backgroundColor: c.line, marginVertical: 4 }}/>
       <FormSection title="Acesso à conta" icon="shield-checkmark-outline">

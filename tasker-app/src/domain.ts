@@ -24,6 +24,10 @@ export type User = {
   bio: string;
   city: string;
   phone: string;
+  workArea?: string;
+  instagram?: string;
+  facebook?: string;
+  linkedin?: string;
   avatar?: string;
   passwordHash?: string;
   username?: string;

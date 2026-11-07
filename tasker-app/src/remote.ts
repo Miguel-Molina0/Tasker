@@ -5,7 +5,7 @@ export function emptyState(theme: State['theme']='dark'): State {
   return {version:1,current:null,theme,users:[],ads:[],contracts:[],events:[],reviews:[],messages:[],notices:[],tickets:[],favorites:{},blocked:{},withdrawals:[]};
 }
 export const userFromApi=(u:any):User => ({id:String(u.id),name:u.first_name || u.username,email:u.email || '',
-  role:u.id_tp_perfil==='autonomo' ? 'profissional' : 'cliente',bio:u.ds_biografia || '',city:u.nm_cidade || '',phone:u.nr_telefone || '',avatar:u.tp_foto || undefined,
+  role:u.id_tp_perfil==='autonomo' ? 'profissional' : 'cliente',bio:u.ds_biografia || '',city:u.nm_cidade || '',phone:u.nr_telefone || '',workArea:u.area_atuacao || '',instagram:u.instagram || '',facebook:u.facebook || '',linkedin:u.linkedin || '',avatar:u.tp_foto || undefined,
   username:u.username});
 function endTime(time:string,duration:number) {
   const end=minutes(time)+duration;
@@ -88,6 +88,10 @@ export async function applyRemoteAction(api:ApiClient,state:State,a:Action):Prom
       if(a.patch.bio!==undefined) body.ds_biografia=a.patch.bio;
       if(a.patch.city!==undefined) body.nm_cidade=a.patch.city;
       if(a.patch.phone!==undefined) body.nr_telefone=a.patch.phone;
+      if(a.patch.workArea!==undefined) body.area_atuacao=a.patch.workArea;
+      if(a.patch.instagram!==undefined) body.instagram=a.patch.instagram;
+      if(a.patch.facebook!==undefined) body.facebook=a.patch.facebook;
+      if(a.patch.linkedin!==undefined) body.linkedin=a.patch.linkedin;
       if(a.patch.avatar?.startsWith('data:')) body.tp_foto=a.patch.avatar;
       await api.request('usuarios/me/','PATCH',body);return;
     }
