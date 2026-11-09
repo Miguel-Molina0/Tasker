@@ -1,4 +1,5 @@
 from django.contrib import admin
+from core import painel
 from django.urls import path, include
 from drf_spectacular.views import (
     SpectacularAPIView, 
@@ -27,6 +28,19 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
 urlpatterns = [
+    path('painel/login/', painel.painel_login, name='painel_login'),
+    path('painel/sair/', painel.painel_sair, name='painel_sair'),
+    path('painel/', painel.painel_inicio, name='painel_inicio'),
+    path('painel/usuarios/', painel.painel_usuarios, name='painel_usuarios'),
+    path('painel/usuarios/<int:pk>/status/', painel.painel_usuario_status, name='painel_usuario_status'),
+    path('painel/anuncios/', painel.painel_anuncios, name='painel_anuncios'),
+    path('painel/anuncios/<int:pk>/status/', painel.painel_anuncio_status, name='painel_anuncio_status'),
+    path('painel/contratacoes/', painel.painel_contratacoes, name='painel_contratacoes'),
+    path('painel/pagamentos/', painel.painel_pagamentos, name='painel_pagamentos'),
+    path('painel/suporte/', painel.painel_suporte, name='painel_suporte'),
+    path('painel/suporte/<int:pk>/responder/', painel.painel_protocolo_responder, name='painel_protocolo_responder'),
+    path('painel/relatorios/', painel.painel_relatorios, name='painel_relatorios'),
+    path('painel/exportar/', painel.painel_exportar, name='painel_exportar'),
     path('admin/', admin.site.urls),
     path('api/', include('core.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
