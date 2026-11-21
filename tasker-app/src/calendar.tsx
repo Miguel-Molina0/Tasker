@@ -12,7 +12,8 @@ export function CalendarScreen() {
         "-01T12:00:00"));
     const calendarIds=new Set((state.calendar||[]).filter(e=>["PENDENTE","CONFIRMADO"].includes(e.status)).map(e=>e.contract));
     const contracts = state.contracts.filter((c) => calendarIds.has(c.id)&& [c.client, c.provider].includes(user?.id || "") && isActive(c));
-    const events = state.events.filter((e) => e.user === user?.id);
+    const isClient = user?.role === "cliente";
+    const events = isClient ? [] : state.events.filter((e) => e.user === user?.id);
     const all = [
         ...contracts.map((c) => ({
             id: c.id,
@@ -37,15 +38,15 @@ export function CalendarScreen() {
     function move(n: number) {
         setMonth(new Date(month.getFullYear(), month.getMonth() + n, 1, 12));
     }
-    return (<Shell title="Minha agenda" nav action={<IconButton name="add" label="Criar compromisso" onPress={() => go("criar-compromisso", undefined, { date: selected })}/>}>
+    return (<Shell title="Minha agenda" nav action={!isClient ? <IconButton name="add" label="Criar compromisso" onPress={() => go("criar-compromisso", undefined, { date: selected })}/> : undefined}>
       <Card>
         <Row>
           <IconTile icon="briefcase-outline" label="Serviços ativos" value={contracts.length}/>
-          <IconTile icon="person-outline" label="Pessoais" value={events.length}/>
+          {!isClient && <IconTile icon="person-outline" label="Pessoais" value={events.length}/>}
         </Row>
         <InfoRow icon="time-outline">
           <Txt muted>
-            Solicitações pendentes reservam o horário nas duas agendas.
+            {isClient ? "Agenda privada: apenas seus serviços agendados, incluindo solicitações pendentes." : "Solicitações pendentes reservam o horário nas duas agendas."}
           </Txt>
         </InfoRow>
       </Card>
@@ -125,7 +126,7 @@ export function CalendarScreen() {
               <Txt style={{ fontWeight: "700", fontSize: 17 }}>{e.title}</Txt>
             </InfoRow>
             <Button title="Abrir compromisso" icon="arrow-forward-outline" secondary onPress={() => go(e.route, e.id)}/>
-          </Card>))) : (<Empty icon="sunny-outline" title="Dia livre" text="Nenhum compromisso ativo nesta data." action="Adicionar compromisso pessoal" onPress={() => go("criar-compromisso", undefined, { date: selected })}/>)}
+          </Card>))) : (isClient ? <Empty icon="sunny-outline" title="Dia livre" text="Nenhum serviço agendado nesta data."/> : <Empty icon="sunny-outline" title="Dia livre" text="Nenhum compromisso ativo nesta data." action="Adicionar compromisso pessoal" onPress={() => go("criar-compromisso", undefined, { date: selected })}/>)}
       <Title>Próximos compromissos</Title>
       {all
             .filter((e) => e.date >= localDate() && e.date !== selected)
@@ -151,6 +152,7 @@ export function EventEditorScreen() {
         date?: string;
     }>(), { state, user, act, run } = useStore(), old = state.events.find((e) => e.id === id && e.user === user?.id);
     const [title, setTitle] = useState(old?.title || ""), [date, setDate] = useState(displayDate(old?.date || initialDate || dayAfter(1))), [time, setTime] = useState(old?.time || "09:00"), [duration, setDuration] = useState(String(old?.duration || 60)), [note, setNote] = useState(old?.note || "");
+    if (user?.role === "cliente") return (<Shell title="Minha agenda"><Empty icon="lock-closed-outline" title="Agenda privada de serviços" text="A agenda do cliente mostra apenas serviços agendados. Para marcar um serviço, acesse um anúncio." action="Explorar serviços" onPress={() => go("pesquisa")}/></Shell>);
     return (<Shell title={old ? "Editar compromisso" : "Criar compromisso"}>
       {id && !old ? (<Empty icon="calendar-outline" title="Compromisso indisponível" text="Ele não pertence à conta atual ou foi removido."/>) : (<>
           <InfoRow icon="person-outline">

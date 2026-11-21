@@ -128,9 +128,9 @@ export function EditProfileScreen() {
       {user?.role === "profissional" && <OptionSelect label="Área de atuação" value={workArea} options={WORK_AREAS} onChange={setWorkArea}/>}
       <Field label="Telefone com DDD" value={phone} onChangeText={setPhone} keyboardType="phone-pad"/>
       <Txt muted>Email: {user?.email}</Txt>
-      <Field label="Instagram (link https://...)" value={instagram} onChangeText={setInstagram} autoCapitalize="none" keyboardType="url"/>
-      <Field label="Facebook (link https://...)" value={facebook} onChangeText={setFacebook} autoCapitalize="none" keyboardType="url"/>
-      <Field label="LinkedIn (link https://...)" value={linkedin} onChangeText={setLinkedin} autoCapitalize="none" keyboardType="url"/>
+      {user?.role === "profissional" && <Field label="Instagram (link https://...)" value={instagram} onChangeText={setInstagram} autoCapitalize="none" keyboardType="url"/>}
+      {user?.role === "profissional" && <Field label="Facebook (link https://...)" value={facebook} onChangeText={setFacebook} autoCapitalize="none" keyboardType="url"/>}
+      {user?.role === "profissional" && <Field label="LinkedIn (link https://...)" value={linkedin} onChangeText={setLinkedin} autoCapitalize="none" keyboardType="url"/>}
       <Button title="Salvar perfil" icon="checkmark-outline" onPress={async () => {
             if (await run(async () => {
                 if (name.trim().length < 3 ||
@@ -138,7 +138,7 @@ export function EditProfileScreen() {
                     !/^\d{10,11}$/.test(phone.replace(/\D/g, "")))
                     throw new Error("Confira nome, cidade da Baixada Santista e telefone com DDD.");
                 if(user?.role === "profissional" && workArea && !WORK_AREAS.includes(workArea)) throw new Error("Selecione uma área de atuação válida.");
-                for(const [label,value,host] of [["Instagram",instagram,"instagram.com"],["Facebook",facebook,"facebook.com"],["LinkedIn",linkedin,"linkedin.com"]]) {
+                for(const [label,value,host] of (user?.role === "profissional" ? [["Instagram",instagram,"instagram.com"],["Facebook",facebook,"facebook.com"],["LinkedIn",linkedin,"linkedin.com"]] : [])) {
                   if(value.trim()) { try {const url=new URL(value.trim()); if(url.protocol!=="https:" || (url.hostname!==host && !url.hostname.endsWith("."+host))) throw new Error();} catch {throw new Error(`Informe um link HTTPS válido de ${label}.`);} }
                 }
                 await act({
@@ -149,7 +149,7 @@ export function EditProfileScreen() {
                         city: city.trim(),
                         phone,
                         workArea:user?.role === "profissional" ? workArea : "",
-                        instagram:instagram.trim(),facebook:facebook.trim(),linkedin:linkedin.trim(),
+                        ...(user?.role === "profissional" ? {instagram:instagram.trim(),facebook:facebook.trim(),linkedin:linkedin.trim()} : {}),
                         avatar,
                     },
                 });
