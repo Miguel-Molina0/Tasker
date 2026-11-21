@@ -89,6 +89,7 @@ class CategoriaViewSet(viewsets.ModelViewSet):
         return [AllowAny()] if self.action in ['list','retrieve'] else [IsAdminUser()]
 
 class CalendarioViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [IsAuthenticated]
     serializer_class = CalendarioSerializer
     queryset = Calendario.objects.all()
     def get_queryset(self):

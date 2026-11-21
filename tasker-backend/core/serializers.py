@@ -67,6 +67,8 @@ class UsuarioSerializer(serializers.ModelSerializer):
             attrs['nr_cnpj'] = digits(cnpj)
             attrs['nr_cpf'] = None
         elif perfil == 'contratante':
+            # Clientes não podem cadastrar links de redes sociais.
+            attrs.update(instagram='', facebook='', linkedin='')
             if not cpf_ok(cpf): raise serializers.ValidationError({'nr_cpf': 'Informe um CPF válido de 11 dígitos.'})
             attrs['nr_cpf'] = digits(cpf)
             attrs['nr_cnpj'] = None
@@ -210,6 +212,13 @@ def validate_images(value):
     return value
 
 class PerfilPublicoSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if instance.id_tp_perfil != 'autonomo':
+            for field in ('instagram', 'facebook', 'linkedin'):
+                data.pop(field, None)
+        return data
+
     class Meta:
         model = Usuario
         fields = ['id','username','first_name','ds_biografia','nm_cidade','tp_foto','id_tp_perfil','area_atuacao','instagram','facebook','linkedin']

@@ -74,8 +74,18 @@ class CompromissoSerializer(serializers.ModelSerializer):
 class CompromissoViewSet(viewsets.ModelViewSet):
     queryset = CompromissoPessoal.objects.all()
     serializer_class = CompromissoSerializer
-    def get_queryset(self): return CompromissoPessoal.objects.filter(usuario=self.request.user).order_by('data','hora')
+    def get_queryset(self):
+        # Clientes possuem somente agenda de contratações; compromissos pessoais são exclusivos de profissionais.
+        if self.request.user.id_tp_perfil != 'autonomo':
+            return CompromissoPessoal.objects.none()
+        return CompromissoPessoal.objects.filter(usuario=self.request.user).order_by('data','hora')
+    def perform_destroy(self, instance):
+        if self.request.user.id_tp_perfil != 'autonomo':
+            raise PermissionDenied('A agenda do cliente contém apenas serviços agendados.')
+        instance.delete()
     def save_locked(self,s):
+        if self.request.user.id_tp_perfil != 'autonomo':
+            raise PermissionDenied('Clientes agendam serviços pela contratação de anúncios.')
         with transaction.atomic():
             Usuario.objects.select_for_update().get(pk=self.request.user.pk)
             old=s.instance
