@@ -57,6 +57,7 @@ def liberar_pagamento(payment_id):
     with transaction.atomic():
         p = Pagamento.objects.select_for_update(of=('self',)).select_related('fk_id_contratacao__fk_id_anuncio__fk_id_usuario').get(pk=payment_id)
         c = p.fk_id_contratacao
+        if c.proposta_reagendamento: raise AsaasError('Serviço bloqueado até a resposta ao reagendamento.')
         if c.contestado: raise AsaasError('Serviço contestado.')
         if c.st_status != 'CONCLUIDO' or not (c.concluido_cliente and c.concluido_prestador):
             raise AsaasError('As duas partes precisam confirmar a conclusão.')

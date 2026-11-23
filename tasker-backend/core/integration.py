@@ -189,6 +189,7 @@ class IntegrationContractMixin:
         if not isinstance(reason,str) or len(reason.strip())<5: raise ValidationError('Descreva o motivo.')
         with transaction.atomic():
             c=self.locked()
+            if c.proposta_reagendamento: raise ValidationError('Serviço bloqueado até a resposta ao reagendamento.')
             if c.st_status!='ACEITO': raise ValidationError('Só serviços aceitos podem ser contestados.')
             c.contestado=True;c.motivo_contestacao=reason[:2000];c.save()
             from .models import Pagamento

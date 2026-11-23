@@ -155,6 +155,7 @@ class ContratacaoViewSet(IntegrationContractMixin, mixins.CreateModelMixin, mixi
     def aceitar(self, request, pk=None):
         with transaction.atomic():
             c = self.locked()
+            if c.proposta_reagendamento: raise ValidationError('Serviço bloqueado até a resposta ao reagendamento.')
             if c.fk_id_anuncio.fk_id_usuario_id != request.user.id: raise PermissionDenied('Somente o prestador pode aceitar.')
             if c.st_status != 'PENDENTE': raise ValidationError('A solicitação deve estar pendente.')
             if not (c.dt_agendamento and c.hr_inicio and c.hr_final): raise ValidationError('Agendamento incompleto.')
@@ -175,6 +176,7 @@ class ContratacaoViewSet(IntegrationContractMixin, mixins.CreateModelMixin, mixi
     def encerrar(self, request, estado):
         with transaction.atomic():
             c = self.locked()
+            if c.proposta_reagendamento: raise ValidationError('Serviço bloqueado até a resposta ao reagendamento.')
             if estado == 'RECUSADO' and c.fk_id_anuncio.fk_id_usuario_id != request.user.id:
                 raise PermissionDenied('Somente o prestador pode recusar.')
             allowed = ['PENDENTE'] if estado == 'RECUSADO' else ['PENDENTE','ACEITO']
@@ -190,6 +192,7 @@ class ContratacaoViewSet(IntegrationContractMixin, mixins.CreateModelMixin, mixi
     def concluir(self, request, pk=None):
         with transaction.atomic():
             c = self.locked()
+            if c.proposta_reagendamento: raise ValidationError('Serviço bloqueado até a resposta ao reagendamento.')
             if c.contestado: raise ValidationError('Serviço contestado; aguarde análise do suporte.')
             if c.st_status not in ['ACEITO','CONCLUIDO']: raise ValidationError('O serviço deve estar aceito.')
             if c.st_status == 'CONCLUIDO': return Response({'status':'Serviço já concluído.','dados':self.get_serializer(c).data})
