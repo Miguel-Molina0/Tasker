@@ -121,6 +121,12 @@ class NotificacaoViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Notificacao.objects.all()
     serializer_class = NotificacaoSerializer
     def get_queryset(self): return Notificacao.objects.filter(usuario=self.request.user).order_by('-criado')
+    @action(detail=False,methods=['delete'],url_path='limpar')
+    def limpar(self,request):
+        # O queryset é sempre limitado ao usuário autenticado; nunca aceitar um ID de terceiro.
+        total, _ = self.get_queryset().delete()
+        return Response({'status':'ok','removidas':total})
+
     @action(detail=False,methods=['post'])
     def ler(self,request):
         qs=self.get_queryset()

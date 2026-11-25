@@ -64,8 +64,11 @@ class UsuarioSerializer(serializers.ModelSerializer):
             return True
         if perfil == 'autonomo':
             if not cnpj_ok(cnpj): raise serializers.ValidationError({'nr_cnpj': 'Informe um CNPJ válido de 14 dígitos.'})
+            # Exigir CPF em novos cadastros; permitir editar perfis legados ainda sem CPF.
+            if self.instance is None or 'nr_cpf' in attrs:
+                if not cpf_ok(cpf): raise serializers.ValidationError({'nr_cpf': 'Informe um CPF válido de 11 dígitos.'})
+                attrs['nr_cpf'] = digits(cpf)
             attrs['nr_cnpj'] = digits(cnpj)
-            attrs['nr_cpf'] = None
         elif perfil == 'contratante':
             # Clientes não podem cadastrar links de redes sociais.
             attrs.update(instagram='', facebook='', linkedin='')
