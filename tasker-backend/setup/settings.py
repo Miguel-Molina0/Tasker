@@ -37,12 +37,28 @@ else:
     if not DEBUG:
         raise RuntimeError('REDIS_URL é obrigatório em produção para WebSockets.')
     CHANNEL_LAYERS = {'default': {'BACKEND': 'channels.layers.InMemoryChannelLayer'}}
+# Configuração padrão preservada: SQLite local ou PostgreSQL de produção.
+# Para testar MySQL, use DB_ENGINE=mysql com as variáveis DB_* (veja
+# runserver-mysql.sh). Nunca altere DB_ENGINE no serviço de produção sem planejar
+# uma migração de dados.
 DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': os.getenv('SQLITE_PATH', str(BASE_DIR/'db.sqlite3'))}}
 if os.getenv('DB_NAME'):
-    DATABASES = {'default': {'ENGINE':'django.db.backends.postgresql','NAME':os.environ['DB_NAME'],
-        'USER':os.getenv('DB_USER','postgres'),'PASSWORD':os.getenv('DB_PASSWORD',''),
-        'HOST':os.getenv('DB_HOST','localhost'),'PORT':os.getenv('DB_PORT','5432'),
-        'OPTIONS': {'sslmode': os.environ['PGSSLMODE']} if os.getenv('PGSSLMODE') else {}}}
+    engine = os.getenv('DB_ENGINE', 'postgresql').strip().lower()
+    if engine not in ('postgresql', 'mysql'):
+        raise RuntimeError('DB_ENGINE deve ser postgresql ou mysql.')
+    DATABASES = {'default': {
+        'ENGINE': 'django.db.backends.mysql' if engine == 'mysql' else 'django.db.backends.postgresql',
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.getenv('DB_USER', 'root' if engine == 'mysql' else 'postgres'),
+        'PASSWORD': os.getenv('DB_PASSWORD', ''),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '3306' if engine == 'mysql' else '5432'),
+        'CONN_MAX_AGE': 0 if engine == 'mysql' else 0,
+        'OPTIONS': (
+            {'charset': 'utf8mb4'} if engine == 'mysql'
+            else ({'sslmode': os.environ['PGSSLMODE']} if os.getenv('PGSSLMODE') else {})
+        ),
+    }}
 AUTH_PASSWORD_VALIDATORS = [{'NAME':'django.contrib.auth.password_validation.'+name} for name in
     ['UserAttributeSimilarityValidator','MinimumLengthValidator','CommonPasswordValidator','NumericPasswordValidator']]
 AUTH_USER_MODEL = 'core.Usuario'
@@ -80,6 +96,7 @@ PAYMENTS_MODE = os.getenv('PAYMENTS_MODE', 'mock')
 ASAAS_API_URL = os.getenv('ASAAS_API_URL', 'https://api-sandbox.asaas.com/v3')
 ASAAS_API_KEY = os.getenv('ASAAS_API_KEY','')
 ASAAS_WEBHOOK_TOKEN = os.getenv('ASAAS_WEBHOOK_TOKEN','')
+# Para este pacote de demonstração, core/asaas.py impede chamadas fora do Sandbox.
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND','django.core.mail.backends.console.EmailBackend')
 EMAIL_HOST = os.getenv('EMAIL_HOST','localhost')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT','25'))

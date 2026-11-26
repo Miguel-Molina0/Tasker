@@ -281,3 +281,48 @@ class WebsocketTests(TransactionTestCase):
                 comm=WebsocketCommunicator(application,f'/ws/chat/{self.c.pk}/'+suffix,headers=headers)
                 connected,_=await comm.connect();self.assertFalse(connected);await comm.disconnect()
         async_to_sync(scenario)()
+
+class RescheduleLockTests(BackendTests):
+    """Regressão: ações de contrato ficam bloqueadas enquanto há proposta."""
+    def test_servico_bloqueado_ate_resposta(self):
+        c = self.contratar()
+        c.proposta_reagendamento = {
+            'date': str(timezone.localdate() + timedelta(days=3)),
+            'time': '12:00', 'by': str(self.u.pk),
+        }
+        c.save(update_fields=['proposta_reagendamento'])
+        self.assertEqual(self.action(c, 'aceitar', self.p).status_code, 400)
+        self.assertEqual(self.action(c, 'recusar', self.p).status_code, 400)
+        self.assertEqual(self.action(c, 'cancelar', self.u).status_code, 400)
+        self.client.force_authenticate(self.p)
+        response = self.client.patch(
+            f'/api/contratacoes/{c.pk}/responder-reagendamento/',
+            {'aceitar': False}, format='json',
+        )
+        self.assertEqual(response.status_code, 200, response.data)
+        c.refresh_from_db()
+        self.assertIsNone(c.proposta_reagendamento)
+        self.assertEqual(self.action(c, 'aceitar', self.p).status_code, 200)
+
+
+class AsaasSandboxSafetyTests(TestCase):
+    @override_settings(PAYMENTS_MODE='asaas', ASAAS_API_KEY='test-key',
+                       ASAAS_API_URL='https://api.asaas.com/v3')
+    def test_producao_bloqueada_neste_pacote(self):
+        from .asaas import AsaasService
+        with self.assertRaisesMessage(AsaasError, 'SOMENTE a API Sandbox'):
+            AsaasService()
+
+    @override_settings(PAYMENTS_MODE='asaas', ASAAS_API_KEY='test-key',
+                       ASAAS_API_URL='https://api-sandbox.asaas.com/v3')
+    def test_transferencia_pix_continua_em_sandbox(self):
+        from .asaas import AsaasService
+        result = Mock()
+        result.json.return_value = {'id': 'tra_sandbox_teste'}
+        with patch('core.asaas.requests.post', return_value=result) as post:
+            response = AsaasService().transferir_para_prestador(
+                150, 'pix-teste@example.com', 'EMAIL', 123)
+        self.assertEqual(response['id'], 'tra_sandbox_teste')
+        self.assertEqual(post.call_args.kwargs['json']['operationType'], 'PIX')
+        self.assertEqual(post.call_args.args[0],
+                         'https://api-sandbox.asaas.com/v3/transfers')

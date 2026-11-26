@@ -5,7 +5,7 @@ from django.core import mail
 from django.core.cache import cache
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import AccessToken
-from .models import Usuario, Categoria, Anuncio, Contratacao, Calendario, Favorito, Bloqueio, Mensagem, Protocolo
+from .models import Usuario, Categoria, Anuncio, Contratacao, Calendario, Favorito, Bloqueio, Mensagem, Protocolo, Notificacao
 from channels.testing import WebsocketCommunicator
 from asgiref.sync import async_to_sync
 
@@ -46,6 +46,16 @@ class IntegratedEndpointsTests(TestCase):
         self.assertEqual(Favorito.objects.count(),1)
         self.client.force_authenticate(self.other);self.assertEqual(self.client.get('/api/favoritos/').data,[])
         self.assertEqual(self.client.delete(f'/api/favoritos/{Favorito.objects.get().pk}/').status_code,404)
+    def test_clear_notifications_only_for_authenticated_user(self):
+        mine=Notificacao.objects.create(usuario=self.u,texto='Aviso da conta')
+        other=Notificacao.objects.create(usuario=self.other,texto='Aviso de outra conta')
+        response=self.client.delete('/api/notificacoes/limpar/')
+        self.assertEqual(response.status_code,200,response.data)
+        self.assertFalse(Notificacao.objects.filter(pk=mine.pk).exists())
+        self.assertTrue(Notificacao.objects.filter(pk=other.pk).exists())
+        self.client.force_authenticate(None)
+        self.assertIn(self.client.delete('/api/notificacoes/limpar/').status_code,[401,403])
+
     def test_personal_event_conflict_blocks_contract(self):
         self.client.force_authenticate(self.p)
         r=self.client.post('/api/compromissos/',{'titulo':'Pessoal','data':self.day,'hora':'10:00','duracao':60})

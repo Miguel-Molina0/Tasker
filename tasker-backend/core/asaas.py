@@ -12,8 +12,13 @@ class AsaasService:
         self.mock = settings.PAYMENTS_MODE == 'mock'
         if settings.PAYMENTS_MODE not in ['mock', 'asaas']:
             raise AsaasError('PAYMENTS_MODE inválido.')
-        if not self.mock and not settings.ASAAS_API_KEY:
-            raise AsaasError('Configure ASAAS_API_KEY.')
+        if not self.mock:
+            # Esta edição é destinada exclusivamente ao ambiente de homologação.
+            # Uma chave real não pode ser utilizada para efetuar operações neste pacote.
+            if settings.ASAAS_API_URL.rstrip('/') != 'https://api-sandbox.asaas.com/v3':
+                raise AsaasError('Segurança: esta versão do Tasker aceita SOMENTE a API Sandbox do Asaas.')
+            if not settings.ASAAS_API_KEY:
+                raise AsaasError('Configure ASAAS_API_KEY do ambiente Sandbox.')
         self.headers = {'access_token': settings.ASAAS_API_KEY, 'Content-Type':'application/json', 'User-Agent':'Tasker-TCC/1.1'}
         self.url = settings.ASAAS_API_URL.rstrip('/')
     def _post(self, route, payload):
@@ -45,7 +50,7 @@ class AsaasService:
             raise AsaasError('Cobrança criada; QR Code indisponível. Consulte o painel Asaas.') from exc
     def transferir_para_prestador(self, valor, chave, tipo, referencia):
         if self.mock: return {'id':'mock_transfer_'+str(uuid4())}
-        return self._post('/transfers', {'value':float(valor), 'pixAddressKey':chave, 'pixAddressKeyType':tipo,
+        return self._post('/transfers', {'value':float(valor), 'operationType':'PIX', 'pixAddressKey':chave, 'pixAddressKeyType':tipo,
             'description':'Tasker contratação '+str(referencia)})
 
     def encerrar_cobranca(self, payment_id, recebido):
